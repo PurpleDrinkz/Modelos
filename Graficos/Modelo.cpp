@@ -3,7 +3,7 @@
 
 Modelo::Modelo(){
 
-} 
+}  
 
 void Modelo::inicializarVertexArray(GLuint posicionID, GLuint colorID){
 	//Crear un vertex array
