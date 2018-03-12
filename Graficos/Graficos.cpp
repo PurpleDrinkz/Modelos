@@ -1,4 +1,4 @@
-// Graficos.cpp : Defines the entry point for the console application.
+ // Graficos.cpp : Defines the entry point for the console application.
 //
 
 #include "stdafx.h"
@@ -7,6 +7,9 @@
 #define GLEW_STATIC
 #include "GL\glew.h"
 #include "GLFW\glfw3.h"
+
+#include "glm\gtx\transform.hpp"
+#include "glm\glm.hpp"
 
 #include <iostream>
 
@@ -21,6 +24,7 @@ using namespace std;
 GLfloat red, green, blue;
 GLuint posicionID;
 GLuint colorID;
+GLuint transformacionesID;
 
 Modelo *figura;
 Modelo *cuadrado;
@@ -44,11 +48,11 @@ void inicializarFigura()
 {
 	figura = new Modelo();
 	Vertice v1 =
-	{ vec3(-1.0f, 0.5f, 0.0f), vec4(1.0f, 0.0f, 0.0f, 1.0f) };
+	{ vec4(-1.0f, 0.5f, 0.0f,1.0f), vec4(1.0f, 0.0f, 0.0f, 1.0f) };
 	Vertice v2 =
-	{ vec3(0.0f, -0.5f, 0.0f), vec4(1.0f, 0.0f, 0.0f, 1.0f) };
+	{ vec4(0.0f, -0.5f, 0.0f,1.0f), vec4(1.0f, 0.0f, 0.0f, 1.0f) };
 	Vertice v3 =
-	{ vec3(1.0f, 0.5f, 0.0f), vec4(1.0f, 0.0f, 0.0f, 1.0f) };
+	{ vec4(1.0f, 0.5f, 0.0f,1.0f), vec4(1.0f, 0.0f, 0.0f, 1.0f) };
 
 	figura->vertices.push_back(v1);
 	figura->vertices.push_back(v2);
@@ -62,13 +66,13 @@ void inicializarCuadrado()
 
 	cuadrado = new Modelo();
 Vertice v1 =
-{ vec3(-0.5f, 0.5f, 0.0f), vec4(0.0f, 1.0f, 0.0f, 0.0f) };
+{ vec4(-0.5f, 0.5f, 0.0f,1.0f), vec4(0.0f, 1.0f, 0.0f, 0.0f) };
 Vertice v2 =
-{ vec3(0.5f, 0.5f, 0.0f), vec4(0.0f, 1.0f, 0.0f, 0.0f) };
+{ vec4(0.5f, 0.5f, 0.0f,1.0f), vec4(0.0f, 1.0f, 0.0f, 0.0f) };
 Vertice v3 =
-{ vec3(0.5f, -0.5f, 0.0f), vec4(0.0f, 1.0f, 0.0f, 0.0f) };
+{ vec4(0.5f, -0.5f, 0.0f,1.0f), vec4(0.0f, 1.0f, 0.0f, 0.0f) };
 Vertice v4 =
-{ vec3(-0.5f, -0.5f, 0.0f), vec4(0.0f, 1.0f, 0.0f, 0.0f) };
+{ vec4(-0.5f, -0.5f, 0.0f,1.0f), vec4(0.0f, 1.0f, 0.0f, 0.0f) };
 
 cuadrado->vertices.push_back(v1);
 cuadrado->vertices.push_back(v2);
@@ -140,6 +144,7 @@ int main()
 	//Mapeo de atributos
 	posicionID = glGetAttribLocation(shader->getID(), "posicion");
 	colorID = glGetAttribLocation(shader->getID(), "color");
+	transformacionesID = glGetUniformLocation(shader->getID(), "transformaciones");
 
 	//Desenlazar shader
 	shader->desenlazarShader();
@@ -149,6 +154,8 @@ int main()
 
 	cuadrado->shader = shader;
 	cuadrado->inicializarVertexArray(posicionID, colorID);
+
+
 
 	//Crear un vertex array
 	
